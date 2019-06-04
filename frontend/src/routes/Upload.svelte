@@ -1,16 +1,18 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
-  import {store } from '../store'
+  import { store } from '../store'
+  import Gallery from '../components/Gallery.svelte'
 
   let active,
       dropzone,
+      images = [],
       inputFiles,
       selectButton,
       unsubscribe
 
   onMount(() => {
     unsubscribe = store.subscribe(data => {
-
+      images = data.imagesToUpload
     })
   })
 
@@ -37,6 +39,12 @@
     e.preventDefault()
     e.stopPropagation()
     active = false
+
+    dropzone.style.justifyContent = 'normal'
+    selectButton.style.background = 'var(--font-color)'
+
+    const files = e.dataTransfer.files
+    handleFiles(files)
   }
 
   // Form Button Selection
@@ -44,6 +52,26 @@
     e.preventDefault()
     e.stopPropagation()
     active = false
+
+    handleFiles(e.files)
+  }
+
+  const handleFiles = files => {
+    // keep previously add files
+    const arrOfAll = [
+      ...images,
+      ...files
+    ]
+
+    // filters out duplicates
+    const filtered = Array.from(new Set(arrOfAll.map(v => v.name)))
+      .map(name => arrOfAll.find(v => v.name === name))
+
+    // saves the filtered list
+    store.update(data => ({
+      ...data,
+      imagesToUpload: filtered
+    }))
   }
 
   onDestroy(() => unsubscribe())
@@ -128,5 +156,7 @@
 
   <!-- loader -->
 
-  <!-- gallery -->
+  {#if images.length > 0}
+     <Gallery images={images} preview={true} />
+  {/if}
 </section>
