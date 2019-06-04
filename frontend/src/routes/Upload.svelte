@@ -50,10 +50,10 @@
 </script>
 
 <style>
-  section {
+  #dropzone {
     min-width: 400px;
     width: 80%;
-    /* min-height: 52vh; */
+    min-height: 52vh;
     margin: 50px auto;
     padding: 20px;
     border: 2px dashed var(--font-color);
@@ -69,10 +69,36 @@
     border-color: var(--accent-color) !important;
   }
 
+  form {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
+  #fileElem {
+    display: none;
+  }
+
+  form section label {
+    display: inline-block;
+    padding: 10px;
+    background: var(--accent-color);
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid var(--font-color);
+    color: var(--background-color);
+  }
+
+  form section label:hover {
+    background: var(--primary-color);
+    border: 1px solid var(--accent-color);
+  }
 </style>
 
 <section
+  id="dropzone"
   class:active
   bind:this={dropzone}
   on:dragenter={handleDragEnter}
