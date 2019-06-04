@@ -24,8 +24,8 @@ Create a simplistic file sharing site that allows users to quickly upload conten
 - [ ] Home Page
 - [ ] Upload Page
 - [ ] About Page
-- [ ] Terms of Service
-- [ ] Privacy Policy
+- [x] Terms of Service
+- [x] Privacy Policy
 
 ### User Stories
 #### Home Page
