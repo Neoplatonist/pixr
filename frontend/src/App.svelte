@@ -80,7 +80,7 @@
 
 	footer {
 		width: 100%;
-    padding: 1.1rem; /* maintains the proper height */
+    padding: 1.1rem 0; /* maintains the proper height */
 		background: var(--secondary-background-color);
 		color: var(--font-secondary-color);
 		display: flex;
