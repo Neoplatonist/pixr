@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte'
   import { store } from '../store'
   import Gallery from '../components/Gallery.svelte'
+  import Loader from '../components/Loader.svelte'
   import UploadBtn from '../components/UploadBtn.svelte'
 
   let active,
@@ -9,11 +10,13 @@
       images = [],
       inputFiles,
       selectButton,
-      unsubscribe
+      unsubscribe,
+      upload
 
   onMount(() => {
     unsubscribe = store.subscribe(data => {
       images = data.imagesToUpload
+      upload = data.upload
     })
   })
 
@@ -157,7 +160,9 @@
     </section>
   </form>
 
-  <!-- loader -->
+  {#if upload}
+     <Loader />
+  {/if}
 
   {#if images.length > 0}
      <Gallery images={images} preview={true} />
