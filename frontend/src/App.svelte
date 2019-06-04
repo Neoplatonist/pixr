@@ -2,9 +2,11 @@
   import { Router, links, Route } from 'svelte-routing'
   import Home from './routes/Home.svelte'
   import Upload from './routes/Upload.svelte'
-	import About from './routes/About.svelte'
+  import About from './routes/About.svelte'
+  import TOS from './routes/TOS.svelte'
+	import PrivacyPolicy from './routes/PrivacyPolicy.svelte'
 
-  export let url = ""
+  export let url = ''
   const year = new Date().getFullYear()
 </script>
 
@@ -77,8 +79,8 @@
 	}
 
 	footer {
-		height: 50px;
 		width: 100%;
+    padding: 1.1rem; /* maintains the proper height */
 		background: var(--secondary-background-color);
 		color: var(--font-secondary-color);
 		display: flex;
@@ -96,6 +98,10 @@
 	footer a {
 		color: var(--accent-color);
 	}
+
+  footer section {
+		font-size: 1rem;
+	}
 </style>
 
 <Router url='{url}'>
@@ -110,6 +116,8 @@
   </header>
 
   <main>
+    <Route path="tos" component="{TOS}" />
+    <Route path="privacypolicy" component="{PrivacyPolicy}" />
     <Route path="/about" component={About} />
     <Route path="/upload" component={Upload} />
     <Route path="/" component={Home} />
@@ -117,5 +125,9 @@
 
   <footer>
     <p>All Rights Reserved. { year } &copy; made with &hearts; by <a href="https://joshfjohnston.com">Josh Johnston</a>.</p>
+
+    <section use:links>
+			<a href="/tos">Terms of Service</a> | <a href="/privacypolicy">Privacy Policy</a>
+		</section>
   </footer>
 </Router>
