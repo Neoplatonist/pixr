@@ -37,7 +37,18 @@
 </script>
 
 <style>
-  /* your styles go here */
+  button {
+    padding: 10px;
+    background: var(--accent-color);
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid var(--font-color);
+  }
+
+  button:hover {
+    background: var(--font-color);
+    border: 1px solid var(--accent-color);
+  }
 </style>
 
 <button on:click={handleClick}>Upload Files</button>
