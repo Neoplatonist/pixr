@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from 'svelte'
   import { store } from '../store'
   import Gallery from '../components/Gallery.svelte'
+  import UploadBtn from '../components/UploadBtn.svelte'
 
   let active,
       dropzone,
@@ -150,7 +151,9 @@
         bind:this={selectButton}
         for="fileElem">Select Files</label>
 
-      <!-- upload button -->
+      {#if images.length > 0}
+        <UploadBtn />
+      {/if}
     </section>
   </form>
 
