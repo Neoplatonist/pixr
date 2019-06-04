@@ -15,19 +15,61 @@
   })
 
   // Drag Events
-  const handleDragEnter = e => {}
-  const handleDragOver = e => {}
-  const handleDrageLeave = e => {}
-  const handleDrop = e => {}
+  const handleDragEnter = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    active = true
+  }
+
+  const handleDragOver = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    active = true
+  }
+
+  const handleDrageLeave = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    active = false
+  }
+
+  const handleDrop = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    active = false
+  }
 
   // Form Button Selection
-  const handleInput = e => {}
+  const handleInput = e => {
+    e.preventDefault()
+    e.stopPropagation()
+    active = false
+  }
 
   onDestroy(() => unsubscribe())
 </script>
 
 <style>
-  /* your styles go here */
+  section {
+    min-width: 400px;
+    width: 80%;
+    /* min-height: 52vh; */
+    margin: 50px auto;
+    padding: 20px;
+    border: 2px dashed var(--font-color);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .active {
+    border-color: var(--accent-color) !important;
+  }
+
+
 </style>
 
 <section
