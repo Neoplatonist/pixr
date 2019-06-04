@@ -5,6 +5,7 @@
 	import About from './routes/About.svelte'
 
   export let url = ""
+  const year = new Date().getFullYear()
 </script>
 
 <style></style>
@@ -27,6 +28,6 @@
   </main>
 
   <footer>
-    <p>All Rights Reserved. 2019 &copy; made with &hearts; by <a href="https://joshfjohnston.com">Josh Johnston</a>.</p>
+    <p>All Rights Reserved. { year } &copy; made with &hearts; by <a href="https://joshfjohnston.com">Josh Johnston</a>.</p>
   </footer>
 </Router>
