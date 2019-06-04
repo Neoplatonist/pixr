@@ -6,12 +6,18 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var logger = log.New(io.Writer(os.Stdout), "cli:", log.Lshortfile)
 
 func initConfig() {
-
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("config")  // name of config file (without extension)
+	viper.AddConfigPath("configs") // path to look for the config file in
+	if err := viper.ReadInConfig(); err != nil {
+		logger.Println("could not read config file")
+	}
 }
 
 func init() {
