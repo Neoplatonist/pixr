@@ -1,11 +1,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/pkg/errors"
+
+	"github.com/neoplatonist/pixr/pkg/server"
 )
 
 var (
@@ -75,6 +77,13 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 
 	logger.Printf("dbCred: %s", dbCred)
 	logger.Printf("port: %s", port)
+
+	webServer, err := server.New(port)
+	if err != nil {
+		return errors.Wrap(err, "creating webServer")
+	}
+
+	webServer.Serve() // starts the webserver
 
 	return nil
 }
