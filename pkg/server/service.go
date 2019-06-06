@@ -10,10 +10,11 @@ import (
 )
 
 // New returns a new instance of the Pixr Service
-func New(port string) (*Service, error) {
+func New(db Database, port string) (*Service, error) {
 	logger := log.New(io.Writer(os.Stdout), "server:", log.Lshortfile)
 
 	return &Service{
+		DB: db,
 		Port: port,
 		Logger: logger,
 	}, nil

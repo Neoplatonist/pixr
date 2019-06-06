@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/pkg/errors"
 
+	"github.com/neoplatonist/pixr/pkg/db"
 	"github.com/neoplatonist/pixr/pkg/server"
 )
 
@@ -75,15 +76,17 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 		port = ":" + viper.GetString("server.port")
 	}
 
-	logger.Printf("dbCred: %s", dbCred)
-	logger.Printf("port: %s", port)
-
-	webServer, err := server.New(port)
+	dbService, err := db.New(dbCred)
 	if err != nil {
-		return errors.Wrap(err, "creating webServer")
+		return errors.Wrap(err, "creating database service")
 	}
 
-	webServer.Serve() // starts the webserver
+	httpService, err := server.New(dbService, port)
+	if err != nil {
+		return errors.Wrap(err, "creating httpService")
+	}
+
+	httpService.Serve() // starts the webserver
 
 	return nil
 }
