@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/pkg/errors"
 
 	"github.com/neoplatonist/pixr/pkg/db"
 	"github.com/neoplatonist/pixr/pkg/server"

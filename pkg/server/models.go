@@ -1,15 +1,19 @@
 package server
 
-import "log"
+import (
+	"log"
+
+	"github.com/neoplatonist/pixr/pkg/db"
+)
 
 // Service defines the structure of the Server Service
 type Service struct {
-	DB 		 Database
+	DB     Database
 	Port   string
 	Logger *log.Logger
 }
 
 // Database default commands
 type Database interface {
-	Add() error
+	Add(image db.Image) error
 }
