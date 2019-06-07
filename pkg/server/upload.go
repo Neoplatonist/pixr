@@ -52,6 +52,7 @@ func (s *Service) handleUpload(c echo.Context) error {
 		src.Close()
 		dst.Close()
 
+		// to database
 		image := db.Image{
 			Name:         name,
 			IP:           c.Request().RemoteAddr,
