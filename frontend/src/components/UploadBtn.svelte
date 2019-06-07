@@ -24,12 +24,40 @@
   }
 
   const uploadFiles = async() => {
-    console.info('TODO: upload files')
+    let formData = new FormData()
+    images.forEach(image => {
+      formData.append("file", image)
+    });
 
-    store.update(data => ({
-      ...data,
-      upload: false
-    }))
+    let err, status = ""
+    try {
+      const resp = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+
+      status = resp.status
+    } catch(error) {
+      err = error
+      console.log(err)
+    }
+
+    if (status == 200 && err != "") {
+      store.update(data => {
+        return {
+          ...data,
+          imagesToUpload: [],
+          upload: false
+        }
+      })
+    } else {
+      store.update(data => {
+        return {
+          ...data,
+          error: err
+        }
+      })
+    }
   }
 
 

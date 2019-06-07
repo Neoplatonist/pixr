@@ -10,4 +10,6 @@ func (s *Service) Routes(e *echo.Echo) {
 	e.File("/about", "frontend/public/index.html")
 	e.File("/tos", "frontend/public/index.html")
 	e.File("/privacypolicy", "frontend/public/index.html")
+
+	e.POST("/upload", s.handleUpload)
 }
