@@ -1,7 +1,7 @@
 DIR = $(shell pwd)
 
 build:
-	@cd cmd; go build -o ../pixr
+	@cd cmd/pixrsvc; go build -o ../pixr
 	@./pixr
 
 buildFront:
