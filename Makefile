@@ -1,7 +1,13 @@
 DIR = $(shell pwd)
 
+devFront:
+	@cd frontend; npm run dev
+
+devBack:
+	@realize start
+
 build:
-	@cd cmd/pixrsvc; go build -o ../pixr
+	@cd cmd/pixrsvc; go build -o ../../pixr
 	@./pixr
 
 buildFront:
