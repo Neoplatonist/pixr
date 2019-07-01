@@ -14,8 +14,8 @@ func New(db Database, port string) (*Service, error) {
 	logger := log.New(io.Writer(os.Stdout), "server:", log.Lshortfile)
 
 	return &Service{
-		DB: db,
-		Port: port,
+		DB:     db,
+		Port:   port,
 		Logger: logger,
 	}, nil
 }

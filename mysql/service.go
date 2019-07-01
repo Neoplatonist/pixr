@@ -10,6 +10,12 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Service defines the structure of the DB Service
+type Service struct {
+	DB     *gorm.DB
+	Logger *log.Logger
+}
+
 // New returns a new instance of the DB Service
 func New(dbCred string) (*Service, error) {
 	logger := log.New(io.Writer(os.Stdout), "mysql:", log.Lshortfile)

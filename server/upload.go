@@ -9,8 +9,9 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"github.com/neoplatonist/pixr/mysql"
 	"github.com/pkg/errors"
+
+	"github.com/neoplatonist/pixr/file"
 )
 
 func (s *Service) handleUpload(c echo.Context) error {
@@ -23,14 +24,14 @@ func (s *Service) handleUpload(c echo.Context) error {
 	date := time.Now().Format("2006-01-02")
 	unix := time.Now().Unix()
 
-	for i, file := range files {
-		suffix := filepath.Ext(file.Filename)
+	for i, f := range files {
+		suffix := filepath.Ext(f.Filename)
 		name := fmt.Sprintf("%d_%s_%d%s", unix, c.Request().RemoteAddr, i, suffix)
 		dir := fmt.Sprintf("data/%s", date)
 		path := fmt.Sprintf("%s/%s", dir, name)
 
 		// source
-		src, err := file.Open()
+		src, err := f.Open()
 		if err != nil {
 			return errors.Wrap(err, "opening file")
 		}
@@ -53,7 +54,7 @@ func (s *Service) handleUpload(c echo.Context) error {
 		dst.Close()
 
 		// to database
-		image := mysql.Image{
+		image := &file.Image{
 			Name:         name,
 			IP:           c.Request().RemoteAddr,
 			FileLocation: path,
