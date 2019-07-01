@@ -44,31 +44,9 @@ func init() {
 }
 
 func rootCmdFunc(cmd *cobra.Command, args []string) error {
-	username := viper.GetString("database.username")
-	password := viper.GetString("database.password")
-	location := viper.GetString("database.location")
-	dbPort := viper.GetString("database.port")
-	dbname := viper.GetString("database.dbname")
-
-	var dbCred string
-	if rootOptions.databaseCred != "" {
-		dbCred = rootOptions.databaseCred + "?charset=utf8&parseTime=True"
-	} else if username != "" &&
-		password != "" &&
-		location != "" &&
-		dbPort != "" &&
-		dbname != "" {
-
-		dbCred = fmt.Sprintf(
-			"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True",
-			username,
-			password,
-			location,
-			dbPort,
-			dbname,
-		)
-	} else {
-		return errors.New("no database credentials found")
+	dbCred := getCredentials()
+	if dbCred == "" {
+		return errors.New("no database credentials specified")
 	}
 
 	port := ":" + rootOptions.serverPort
@@ -89,4 +67,33 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 	httpService.Serve() // starts the webserver
 
 	return nil
+}
+
+func getCredentials() string {
+	username := viper.GetString("database.username")
+	password := viper.GetString("database.password")
+	location := viper.GetString("database.location")
+	dbPort := viper.GetString("database.port")
+	dbname := viper.GetString("database.dbname")
+
+	var dbCred string
+	if rootOptions.databaseCred != "" {
+		dbCred = rootOptions.databaseCred + "?charset=utf8&parseTime=True"
+	} else if username != "" && // adding the else if will keep dbCred as an empty string if it fails
+		password != "" &&
+		location != "" &&
+		dbPort != "" &&
+		dbname != "" {
+
+		dbCred = fmt.Sprintf(
+			"%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True",
+			username,
+			password,
+			location,
+			dbPort,
+			dbname,
+		)
+	}
+
+	return dbCred
 }
