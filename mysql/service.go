@@ -1,18 +1,18 @@
-package db
+package mysql
 
 import (
-	"log"
 	"io"
+	"log"
 	"os"
 
-	"github.com/pkg/errors"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // is the mysql driver
+	"github.com/pkg/errors"
 )
 
 // New returns a new instance of the DB Service
 func New(dbCred string) (*Service, error) {
-	logger := log.New(io.Writer(os.Stdout), "db:", log.Lshortfile)
+	logger := log.New(io.Writer(os.Stdout), "mysql:", log.Lshortfile)
 
 	db, err := gorm.Open("mysql", dbCred)
 	if err != nil {
@@ -20,7 +20,7 @@ func New(dbCred string) (*Service, error) {
 	}
 
 	return &Service{
-		DB: db,
+		DB:     db,
 		Logger: logger,
 	}, nil
 }

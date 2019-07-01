@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"github.com/neoplatonist/pixr/pkg/db"
+	"github.com/neoplatonist/pixr/mysql"
 	"github.com/pkg/errors"
 )
 
@@ -53,7 +53,7 @@ func (s *Service) handleUpload(c echo.Context) error {
 		dst.Close()
 
 		// to database
-		image := db.Image{
+		image := mysql.Image{
 			Name:         name,
 			IP:           c.Request().RemoteAddr,
 			FileLocation: path,

@@ -3,7 +3,7 @@ package server
 import (
 	"log"
 
-	"github.com/neoplatonist/pixr/pkg/db"
+	"github.com/neoplatonist/pixr/mysql"
 )
 
 // Service defines the structure of the Server Service
@@ -15,5 +15,5 @@ type Service struct {
 
 // Database default commands
 type Database interface {
-	Add(image db.Image) error
+	Add(image mysql.Image) error
 }

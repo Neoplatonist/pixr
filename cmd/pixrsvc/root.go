@@ -7,8 +7,8 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/neoplatonist/pixr/pkg/db"
-	"github.com/neoplatonist/pixr/pkg/server"
+	"github.com/neoplatonist/pixr/mysql"
+	"github.com/neoplatonist/pixr/server"
 )
 
 var (
@@ -76,7 +76,7 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 		port = ":" + viper.GetString("server.port")
 	}
 
-	dbService, err := db.New(dbCred)
+	dbService, err := mysql.New(dbCred)
 	if err != nil {
 		return errors.Wrap(err, "creating database service")
 	}
