@@ -31,7 +31,7 @@
 
     let err, status = ""
     try {
-      const resp = await fetch('/upload', {
+      const resp = await fetch('/images', {
         method: 'POST',
         body: formData
       })
