@@ -4,5 +4,6 @@ bundle.*
 
 vendor
 *.yaml
+routes.json
 pixr
 data/*
