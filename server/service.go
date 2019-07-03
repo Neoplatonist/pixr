@@ -45,9 +45,18 @@ func New(is file.Service) *Server {
 	s.router.File("/tos", "frontend/public/index.html")
 	s.router.File("/privacypolicy", "frontend/public/index.html")
 
+	ql := &quotaLimiter{
+		maxUploads: 10, // max uploads per alotted time
+		limitBan:   60, // mins until exceeded limit lifted
+		clients:    make(map[string]*quotaLimitClient),
+	}
+
+	go ql.cleanQuotaLimiter()
+
 	i := s.router.Group("/images")
 	fh := fileHandler{
 		service: s.Image,
+		quota:   ql,
 		logger:  logger,
 	}
 	fh.router(i)

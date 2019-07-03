@@ -19,14 +19,15 @@ const imagesToReturn = 10
 
 type fileHandler struct {
 	service file.Service
+	quota   *quotaLimiter
 	logger  *log.Logger
 }
 
 // route "/images"
 func (f *fileHandler) router(e *echo.Group) {
-	e.GET("", f.getImages)    // Get all images
-	e.POST("", f.upload)      // Create new image
-	e.GET("/:id", f.getImage) // Get single image
+	e.GET("", f.getImages)              // Get all images
+	e.POST("", f.quota.limit(f.upload)) // Create new image
+	e.GET("/:id", f.getImage)           // Get single image
 	// e.PUT("/:id", f.updateImage) 		// Update single image
 	// e.DELETE("/:id", f.deleteImage) // Delete single image
 }
