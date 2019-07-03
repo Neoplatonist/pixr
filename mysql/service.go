@@ -1,32 +1,29 @@
 package mysql
 
 import (
-	"io"
-	"log"
-	"os"
-
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql" // is the mysql driver
 	"github.com/pkg/errors"
+
+	"github.com/neoplatonist/pixr/file"
 )
 
-// Service defines the structure of the DB Service
-type Service struct {
-	DB     *gorm.DB
-	Logger *log.Logger
+// ImageRepository implements image database interface
+type ImageRepository struct {
+	db *gorm.DB
 }
 
-// New returns a new instance of the DB Service
-func New(dbCred string) (*Service, error) {
-	logger := log.New(io.Writer(os.Stdout), "mysql:", log.Lshortfile)
+// NewImageRepository instantiates a new database repo for image to use
+func NewImageRepository(db *gorm.DB) file.Repository {
+	return &ImageRepository{
+		db,
+	}
+}
 
-	db, err := gorm.Open("mysql", dbCred)
-	if err != nil {
-		return nil, errors.Wrap(err, "connecting to the database")
+// Add creates new item in the database
+func (i *ImageRepository) Add(image *file.Image) error {
+	if err := i.db.Create(&image).Error; err != nil {
+		return errors.Wrap(err, "adding image")
 	}
 
-	return &Service{
-		DB:     db,
-		Logger: logger,
-	}, nil
+	return nil
 }

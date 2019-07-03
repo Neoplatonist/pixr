@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql" // is the mysql driver
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/neoplatonist/pixr/file"
 	"github.com/neoplatonist/pixr/mysql"
 	"github.com/neoplatonist/pixr/server"
 )
@@ -54,17 +57,16 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 		port = ":" + viper.GetString("server.port")
 	}
 
-	dbService, err := mysql.New(dbCred)
+	// Connects to the database
+	db, err := gorm.Open("mysql", dbCred)
 	if err != nil {
-		return errors.Wrap(err, "creating database service")
+		return errors.Wrap(err, "connecting to the database")
 	}
 
-	httpService, err := server.New(dbService, port)
-	if err != nil {
-		return errors.Wrap(err, "creating httpService")
-	}
-
-	httpService.Serve() // starts the webserver
+	imageDB := mysql.NewImageRepository(db)
+	imageService := file.New(imageDB)
+	httpService := server.New(imageService)
+	httpService.Start(port)
 
 	return nil
 }
