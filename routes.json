@@ -1,5 +1,10 @@
 [
   {
+    "method": "POST",
+    "path": "/images",
+    "name": "github.com/neoplatonist/pixr/server.(*quotaLimiter).limit.func1"
+  },
+  {
     "method": "GET",
     "path": "/images/:id",
     "name": "github.com/neoplatonist/pixr/server.(*fileHandler).getImage-fm"
@@ -15,9 +20,14 @@
     "name": "github.com/labstack/echo/v4.common.file.func1"
   },
   {
-    "method": "POST",
-    "path": "/images",
-    "name": "github.com/neoplatonist/pixr/server.(*quotaLimiter).limit.func1"
+    "method": "GET",
+    "path": "/about",
+    "name": "github.com/labstack/echo/v4.common.file.func1"
+  },
+  {
+    "method": "GET",
+    "path": "/tos",
+    "name": "github.com/labstack/echo/v4.common.file.func1"
   },
   {
     "method": "GET",
@@ -33,15 +43,5 @@
     "method": "GET",
     "path": "/images/data/*",
     "name": "github.com/labstack/echo/v4.common.static.func1"
-  },
-  {
-    "method": "GET",
-    "path": "/about",
-    "name": "github.com/labstack/echo/v4.common.file.func1"
-  },
-  {
-    "method": "GET",
-    "path": "/tos",
-    "name": "github.com/labstack/echo/v4.common.file.func1"
   }
 ]

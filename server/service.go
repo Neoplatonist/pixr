@@ -30,6 +30,7 @@ func New(is file.Service) *Server {
 
 	s.router.HideBanner = true
 	s.router.Pre(middleware.RemoveTrailingSlash())
+	s.router.Use(cacheControl)
 	s.router.Use(middleware.Logger())
 	s.router.Use(middleware.Recover())
 
@@ -74,4 +75,11 @@ func New(is file.Service) *Server {
 // Start initiates the Server service on the specified port
 func (s *Server) Start(port string) error {
 	return s.router.Start(port)
+}
+
+func cacheControl(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		c.Response().Header().Set("Cache-Control", "max-age=2592000")
+		return next(c)
+	}
 }
