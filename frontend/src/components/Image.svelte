@@ -23,8 +23,13 @@
   }
 </style>
 
-{#if preview}
-   <img src={img} alt={image.name}>
-{:else}
-   <img src={image.file_location} alt={image.name}>
+{#if preview && img != undefined}
+  <img
+    id="preview"
+    src={img}
+    alt={image.name} />
+{:else if img != undefined}
+  <img
+    src={image.file_location}
+    alt={image.name} />
 {/if}
