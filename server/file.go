@@ -9,9 +9,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/labstack/echo"
-	"github.com/neoplatonist/pixr/file"
+	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+
+	"github.com/neoplatonist/pixr/file"
 )
 
 const imagesToReturn = 10
