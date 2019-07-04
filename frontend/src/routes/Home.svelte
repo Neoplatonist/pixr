@@ -75,12 +75,20 @@
   #error {
     color: var(--error-color);
   }
+#selector {
+    float: right;
+  }
+
+  #selector label {
+    clear: both;
+    float: left;
+    margin-top: 0.7rem;
+  }
 
   select {
     background-color: var(--background-color);
     color: var(--font-secondary-color);
     border: none;
-    float: right;
   }
 
   select:hover {
@@ -101,14 +109,18 @@
   {/if}
 
   {#if images.length > 0}
-    <select
-      name="order"
-      bind:value={selectedOrder}
-      on:change={handleSelect}>
+    <div id="selector">
+      <label class="label" for="orderSelector">Order: </label>
+      <select
+        id="orderSelector"
+        name="order"
+        bind:value={selectedOrder}
+        on:change={handleSelect}>
 
-      <option value="oldest">Oldest</option>
-      <option value="newest">Newest</option>
-    </select>
+        <option value="oldest">Oldest</option>
+        <option value="newest">Newest</option>
+      </select>
+    </div>
 
     <Gallery images={images} preview={false} />
   {:else}
