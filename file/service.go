@@ -1,6 +1,9 @@
 package file
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/pkg/errors"
 )
 
@@ -8,6 +11,7 @@ import (
 type Service interface {
 	GetImages(id, count int, order string) ([]Location, error)
 	UploadImage(name, ip, filelocation string) error
+	DeleteImages(names []string) error
 }
 
 type service struct {
@@ -60,4 +64,26 @@ func (s *service) GetImages(id, count int, order string) ([]Location, error) {
 	}
 
 	return images, nil
+}
+
+// DeleteImages deletes all images from the disk and database
+func (s *service) DeleteImages(names []string) error {
+	images, err := s.repo.DeleteImagesByName(names)
+	if err != nil {
+		return errors.Wrap(err, "deleting images")
+	}
+
+	var fileErrd []string
+	for _, image := range images {
+		if err := os.Remove(image.FileLocation); err != nil {
+			fileErrd = append(fileErrd, image.Name)
+		}
+	}
+
+	if len(fileErrd) > 0 {
+		err := fmt.Sprintf("files failed deleting: %v", fileErrd)
+		return errors.New(err)
+	}
+
+	return nil
 }

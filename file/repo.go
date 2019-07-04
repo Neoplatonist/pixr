@@ -5,4 +5,5 @@ type Repository interface {
 	AddImage(image *Image) error
 	GetNewestImages(pagi *Pagination) ([]Location, error)
 	GetOldestImages(pagi *Pagination) ([]Location, error)
+	DeleteImagesByName(names []string) ([]Location, error)
 }
