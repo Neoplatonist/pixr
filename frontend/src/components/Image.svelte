@@ -32,6 +32,10 @@
     margin: 1rem;
     vertical-align: middle;
   }
+
+  img:hover {
+    cursor: pointer;
+  }
 </style>
 
 {#if preview && img != undefined}
