@@ -5,6 +5,7 @@
 
   let images = [],
       lock = false,
+      selectedOrder = 'oldest',
       unsubscribe
 
   onMount(() => {
@@ -18,7 +19,7 @@
   const getImages = async(id) => {
     lock = true
     try {
-      const resp = await fetch(`/images?id=${id}&order=newest`)
+      const resp = await fetch(`/images?id=${id}&order=${selectedOrder}`)
       if (!resp.ok) {
         throw Error(`Could not retrieve images. Try refreshing the page.`)
       }
@@ -28,8 +29,6 @@
         // nothing to see
         return
       }
-
-      console.log(result)
 
       store.update(data => ({
         ...data,
@@ -44,15 +43,48 @@
     lock = false
   }
 
+  const handleSelect = e => {
+    store.update(data => ({
+      ...data,
+      images: []
+    }))
+
+    getImages(0)
+  }
+
   onDestroy(() => unsubscribe())
 </script>
 
 <style>
-  /* your styles go here */
+  select {
+    background-color: var(--background-color);
+    color: var(--font-secondary-color);
+    border: none;
+    float: right;
+  }
+
+  select:hover {
+    cursor: pointer;
+  }
+
+  select:focus {
+    outline: none;
+  }
 </style>
 
 <section>
   {#if images.length > 0}
+    <label for="orderSelector"></label>
+    <select
+      id="orderSelector"
+      name="order"
+      bind:value={selectedOrder}
+      on:change={handleSelect}>
+
+      <option value="oldest">Oldest</option>
+      <option value="newest">Newest</option>
+    </select>
+
     <Gallery images={images} preview={false} />
   {:else}
     <h3>No images found</h3>
