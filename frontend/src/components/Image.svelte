@@ -1,11 +1,18 @@
 <script>
-  import { onMount } from 'svelte'
+  import { onMount, onDestroy } from 'svelte'
   import { store } from '../store'
 
   export let image, preview
 
-  let img
+  let img,
+      images,
+      unsubscribe
+
   onMount(() => {
+    unsubscribe = store.subscribe(data => {
+      images = data.imagesToUpload
+    })
+
     if (preview) {
       let reader = new FileReader()
       reader.readAsDataURL(image)
@@ -14,6 +21,14 @@
       }
     }
   })
+
+  const handleDelete = e => {
+    const filtered = images.filter(data => data != image)
+    store.update(data => ({
+      ...data,
+      imagesToUpload: filtered
+    }))
+  }
 
   const handleModal = e => {
     store.update(data => ({
@@ -24,6 +39,8 @@
       }
     }))
   }
+
+  onDestroy(() => unsubscribe())
 </script>
 
 <style>
@@ -36,11 +53,16 @@
   img:hover {
     cursor: pointer;
   }
+
+  #preview:hover {
+    outline: 5px red solid;
+  }
 </style>
 
 {#if preview && img != undefined}
   <img
     id="preview"
+    on:click|preventDefault|stopPropagation={handleDelete}
     src={img}
     alt={image.name} />
 {:else if !preview}
