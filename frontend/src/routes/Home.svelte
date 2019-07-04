@@ -1,17 +1,24 @@
 <script>
   import { onMount, onDestroy } from 'svelte'
   import Gallery from '../components/Gallery.svelte'
+  import Modal from '../components/Modal.svelte'
   import { store } from '../store'
 
   let error = '',
       images = [],
       lock = false,
+      modal = {
+        isActive: false,
+        image: ''
+      },
       selectedOrder = 'oldest',
       unsubscribe
 
   onMount(() => {
     unsubscribe = store.subscribe(data => {
+      error = data.error
       images = data.images
+      modal = data.modal
     })
 
     getImages(0)
@@ -97,5 +104,9 @@
     <Gallery images={images} preview={false} />
   {:else}
     <h3>No images found</h3>
+  {/if}
+
+  {#if modal.isActive}
+    <Modal />
   {/if}
 </section>

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte'
+  import { store } from '../store'
 
   export let image, preview
 
@@ -13,6 +14,16 @@
       }
     }
   })
+
+  const handleModal = e => {
+    store.update(data => ({
+      ...data,
+      modal: {
+        isActive: true,
+        image: image
+      }
+    }))
+  }
 </script>
 
 <style>
@@ -30,6 +41,7 @@
     alt={image.name} />
 {:else if !preview}
   <img
+    on:click|preventDefault|stopPropagation={handleModal}
     src={image.file_location}
     alt={image.name} />
 {/if}
