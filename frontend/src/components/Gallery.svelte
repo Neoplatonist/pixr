@@ -2,8 +2,6 @@
   import Image from './Image.svelte'
 
   export let images, preview
-
-  console.log('Gallery says hello!')
 </script>
 
 <style>
