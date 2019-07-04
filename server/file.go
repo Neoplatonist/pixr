@@ -5,8 +5,10 @@ import (
 	"io"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -33,7 +35,23 @@ func (f *fileHandler) router(e *echo.Group) {
 }
 
 func (f *fileHandler) getImages(c echo.Context) error {
-	return nil
+	fmt.Println("entered getImages GET Req")
+	order := c.QueryParam("order")
+	id, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return errors.Wrap(err, "converting string to int")
+	}
+
+	fmt.Println(order)
+	fmt.Println(id)
+
+	// 10 is the number of images to return from the database at a given time
+	images, err := f.service.GetImages(id, imagesToReturn, order)
+	if err != nil {
+		return errors.Wrap(err, "getting images")
+	}
+
+	return c.JSON(http.StatusOK, images)
 }
 
 func (f *fileHandler) upload(c echo.Context) error {

@@ -53,7 +53,7 @@ func TestNewImageRepository(t *testing.T) {
 	}
 }
 
-func TestImageRepository_Add(t *testing.T) {
+func TestImageRepository_AddImage(t *testing.T) {
 	mock.ExpectExec("INSERT INTO `images`").
 		WithArgs(AnyTime{}, "test", "localhost", "/data/test.jpg").
 		WillReturnResult(sqlmock.NewResult(1, 1))
@@ -103,7 +103,7 @@ func TestImageRepository_Add(t *testing.T) {
 				db: tt.fields.db,
 			}
 
-			if err := i.Add(tt.args.image); (err != nil) != tt.wantErr {
+			if err := i.AddImage(tt.args.image); (err != nil) != tt.wantErr {
 				t.Errorf("imageRepository.Create() error = %v, wantErr %v", err, tt.wantErr)
 			}
 

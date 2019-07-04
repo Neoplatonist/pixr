@@ -28,7 +28,7 @@
     id="preview"
     src={img}
     alt={image.name} />
-{:else if img != undefined}
+{:else if !preview}
   <img
     src={image.file_location}
     alt={image.name} />

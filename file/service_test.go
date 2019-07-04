@@ -24,8 +24,16 @@ type repository struct {
 	db *gorm.DB
 }
 
-func (r *repository) Add(image *Image) error {
+func (r *repository) AddImage(image *Image) error {
 	return nil
+}
+
+func (r *repository) GetNewestImages(pagi *Pagination) ([]Location, error) {
+	return nil, nil
+}
+
+func (r *repository) GetOldestImages(pagi *Pagination) ([]Location, error) {
+	return nil, nil
 }
 
 func TestNew(t *testing.T) {
