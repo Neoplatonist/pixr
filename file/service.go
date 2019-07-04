@@ -1,8 +1,6 @@
 package file
 
 import (
-	"fmt"
-
 	"github.com/pkg/errors"
 )
 
@@ -43,16 +41,13 @@ func (s *service) GetImages(id, count int, order string) ([]Location, error) {
 	var images []Location
 	switch order {
 	case "newest":
-		fmt.Println("[switch] getNewestImages")
 		images, err = s.repo.GetNewestImages(pagi)
 		if err != nil {
 			return nil, errors.Wrap(err, "getting image service")
 		}
 	case "oldest":
-		fmt.Println("[switch] getOldestImages")
 		fallthrough
 	default:
-		fmt.Println("[switch] getDefaultImages")
 		images, err = s.repo.GetOldestImages(pagi)
 		if err != nil {
 			return nil, errors.Wrap(err, "getting image service")

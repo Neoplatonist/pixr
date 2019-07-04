@@ -1,8 +1,6 @@
 package mysql
 
 import (
-	"log"
-
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 
@@ -32,8 +30,6 @@ func (i *ImageRepository) AddImage(image *file.Image) error {
 
 // GetNewestImages retrieves images by latest added to the database in ascending order by id
 func (i *ImageRepository) GetNewestImages(pagi *file.Pagination) ([]file.Location, error) {
-	log.Println("[mysql.imageRepo.go] GetNewestImages() database")
-
 	var images []file.Location
 	if err := i.db.Table("images").
 		Select("id, name, file_location").
@@ -44,15 +40,11 @@ func (i *ImageRepository) GetNewestImages(pagi *file.Pagination) ([]file.Locatio
 		return nil, errors.Wrap(err, "getting images")
 	}
 
-	log.Println("[mysql.imageRepo.go] images: ", images)
-
 	return images, nil
 }
 
 // GetOldestImages retrieves images by oldest added to the database in descending order by id
 func (i *ImageRepository) GetOldestImages(pagi *file.Pagination) ([]file.Location, error) {
-	log.Println("[mysql.imageRepo.go] GetOldestImages() database")
-
 	var images []file.Location
 	if pagi.ID == 0 {
 		if err := i.db.Table("images").
@@ -72,8 +64,6 @@ func (i *ImageRepository) GetOldestImages(pagi *file.Pagination) ([]file.Locatio
 			return nil, errors.Wrap(err, "getting images")
 		}
 	}
-
-	log.Println("[mysql.imageRepo.go] images: ", images)
 
 	return images, nil
 }

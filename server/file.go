@@ -35,15 +35,11 @@ func (f *fileHandler) router(e *echo.Group) {
 }
 
 func (f *fileHandler) getImages(c echo.Context) error {
-	fmt.Println("entered getImages GET Req")
 	order := c.QueryParam("order")
 	id, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		return errors.Wrap(err, "converting string to int")
 	}
-
-	fmt.Println(order)
-	fmt.Println(id)
 
 	// 10 is the number of images to return from the database at a given time
 	images, err := f.service.GetImages(id, imagesToReturn, order)
