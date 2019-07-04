@@ -4,5 +4,9 @@ export const store = writable({
   error: [],
   images: [],
   imagesToUpload: [],
+  modal: {
+    isActive: false,
+    image: ''
+  },
   upload: false
 });

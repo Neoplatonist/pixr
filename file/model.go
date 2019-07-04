@@ -17,3 +17,16 @@ type Image struct {
 	IP           string `gorm:"size:15;not null"`
 	FileLocation string `gorm:"not null"`
 }
+
+// Location defines file location
+type Location struct {
+	ID           int64  `json:"id"`
+	Name         string `json:"name"`
+	FileLocation string `json:"file_location"`
+}
+
+// Pagination keeps track of 'cursor' location in the database
+type Pagination struct {
+	ID    int64
+	Count int64
+}
