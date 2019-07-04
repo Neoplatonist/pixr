@@ -101,9 +101,7 @@
   {/if}
 
   {#if images.length > 0}
-    <label for="orderSelector"></label>
     <select
-      id="orderSelector"
       name="order"
       bind:value={selectedOrder}
       on:change={handleSelect}>

@@ -6,8 +6,9 @@
   import UploadBtn from '../components/UploadBtn.svelte'
 
   let active,
-  btnGrey = false,
+      btnGrey = false,
       dropzone,
+      error,
       images = [],
       inputFiles,
       selectButton,
@@ -21,6 +22,7 @@
     }))
 
     unsubscribe = store.subscribe(data => {
+      error = data.error
       images = data.imagesToUpload
       upload = data.upload
     })
@@ -38,39 +40,26 @@
 
   // Drag Events
   const handleDragEnter = e => {
-    e.preventDefault()
-    e.stopPropagation()
     active = true
   }
 
   const handleDragOver = e => {
-    e.preventDefault()
-    e.stopPropagation()
     active = true
   }
 
   const handleDrageLeave = e => {
-    e.preventDefault()
-    e.stopPropagation()
     active = false
   }
 
   const handleDrop = e => {
-    e.preventDefault()
-    e.stopPropagation()
     active = false
-
-    const files = e.dataTransfer.files
-    handleFiles(files)
+    handleFiles(e.dataTransfer.files)
   }
 
   // Form Button Selection
   const handleInput = e => {
-    e.preventDefault()
-    e.stopPropagation()
     active = false
-
-    handleFiles(e.files)
+    handleFiles(Array.from(e.target.files))
   }
 
   const handleFiles = files => {
@@ -159,15 +148,24 @@
   }
 </style>
 
+{#if upload}
+  <Loader />
+{/if}
+
+{#if error != ''}
+  <p id="error">{ error }</p>
+{/if}
+
 <section
   id="dropzone"
   class:active
   bind:this={dropzone}
-  on:dragenter={handleDragEnter}
-  on:dragover={handleDragOver}
-  on:dragleave={handleDrageLeave}
-  on:drop={handleDrop}
+  on:dragenter|preventDefault|stopPropagation={handleDragEnter}
+  on:dragover|preventDefault|stopPropagation={handleDragOver}
+  on:dragleave|preventDefault|stopPropagation={handleDrageLeave}
+  on:drop|preventDefault|stopPropagation={handleDrop}
   >
+
   <form>
     <p>Click and drag files or use the button.</p>
 
@@ -190,10 +188,6 @@
       {/if}
     </section>
   </form>
-
-  {#if upload}
-     <Loader />
-  {/if}
 
   {#if images.length > 0}
      <Gallery images={images} preview={true} />
