@@ -29,11 +29,15 @@ func (r *repository) AddImage(image *Image) error {
 }
 
 func (r *repository) GetNewestImages(pagi *Pagination) ([]Location, error) {
-	return nil, nil
+	return []Location{}, nil
 }
 
 func (r *repository) GetOldestImages(pagi *Pagination) ([]Location, error) {
-	return nil, nil
+	return []Location{}, nil
+}
+
+func (r *repository) DeleteImagesByName(names []string) ([]Location, error) {
+	return []Location{}, nil
 }
 
 func TestNew(t *testing.T) {

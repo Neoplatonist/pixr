@@ -1,6 +1,8 @@
 package mysql
 
 import (
+	"fmt"
+
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 
@@ -63,6 +65,32 @@ func (i *ImageRepository) GetOldestImages(pagi *file.Pagination) ([]file.Locatio
 			Scan(&images).Error; err != nil {
 			return nil, errors.Wrap(err, "getting images")
 		}
+	}
+
+	return images, nil
+}
+
+//DeleteImagesByName by a list of names []string
+func (i *ImageRepository) DeleteImagesByName(names []string) ([]file.Location, error) {
+	var images []file.Location
+	for _, name := range names {
+		var img file.Image
+
+		if err := i.db.Table("images").
+			Select("id, file_location").
+			Where("name = ?", name).
+			Scan(&img).Error; err != nil {
+			e := fmt.Sprintf("on file: %s", name)
+			return nil, errors.Wrap(err, e)
+		}
+
+		images = append(images, file.Location{
+			ID:           img.ID,
+			Name:         img.Name,
+			FileLocation: img.FileLocation,
+		})
+
+		i.db.Delete(&img)
 	}
 
 	return images, nil
