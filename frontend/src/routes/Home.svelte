@@ -51,6 +51,14 @@
     lock = false
   }
 
+  const handleWheel = e => {
+    const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+
+    if (nearBottom && !lock) {
+      getImages(images[images.length-1].id)
+    }
+  }
+
   const handleSelect = e => {
     store.update(data => ({
       ...data,
@@ -83,6 +91,9 @@
     outline: none;
   }
 </style>
+
+<!-- Infinite scroll window handler -->
+<svelte:window on:wheel={handleWheel}/>
 
 <section>
   {#if error != ''}
