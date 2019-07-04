@@ -3,7 +3,8 @@
   import Gallery from '../components/Gallery.svelte'
   import { store } from '../store'
 
-  let images = [],
+  let error = '',
+      images = [],
       lock = false,
       selectedOrder = 'oldest',
       unsubscribe
@@ -56,6 +57,10 @@
 </script>
 
 <style>
+  #error {
+    color: var(--error-color);
+  }
+
   select {
     background-color: var(--background-color);
     color: var(--font-secondary-color);
@@ -73,6 +78,10 @@
 </style>
 
 <section>
+  {#if error != ''}
+    <p id="error">{ error }</p>
+  {/if}
+
   {#if images.length > 0}
     <label for="orderSelector"></label>
     <select
