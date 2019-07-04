@@ -1,11 +1,12 @@
 <script>
-  import { onMount, onDestroy } from 'svelte'
+  import { onMount, onDestroy, afterUpdate } from 'svelte'
   import { store } from '../store'
   import Gallery from '../components/Gallery.svelte'
   import Loader from '../components/Loader.svelte'
   import UploadBtn from '../components/UploadBtn.svelte'
 
   let active,
+  btnGrey = false,
       dropzone,
       images = [],
       inputFiles,
@@ -14,10 +15,25 @@
       upload
 
   onMount(() => {
+    store.update(data => ({
+      ...data,
+      error: ''
+    }))
+
     unsubscribe = store.subscribe(data => {
       images = data.imagesToUpload
       upload = data.upload
     })
+  })
+
+  afterUpdate(() => {
+    if (images.length == 0) {
+      dropzone.style.justifyContent = 'center'
+      btnGrey = false
+    } else {
+      dropzone.style.justifyContent = 'normal'
+      btnGrey = true
+    }
   })
 
   // Drag Events
@@ -43,9 +59,6 @@
     e.preventDefault()
     e.stopPropagation()
     active = false
-
-    dropzone.style.justifyContent = 'normal'
-    selectButton.style.background = 'var(--font-color)'
 
     const files = e.dataTransfer.files
     handleFiles(files)
@@ -82,14 +95,20 @@
 </script>
 
 <style>
+  #error {
+    text-align: center;
+    margin: 2rem 0 0 0;
+    color: var(--error-color);
+  }
+
   #dropzone {
     min-width: 400px;
     width: 80%;
     min-height: 52vh;
-    margin: 50px auto;
-    padding: 20px;
+    margin: 2.5rem auto;
+    padding: 2rem;
     border: 2px dashed var(--font-color);
-    border-radius: 10px;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -102,7 +121,7 @@
   }
 
   form {
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,17 +134,28 @@
 
   form section label {
     display: inline-block;
-    padding: 10px;
+    padding: 1rem;
     background: var(--accent-color);
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 0.5rem;
     border: 1px solid var(--font-color);
     color: var(--background-color);
   }
 
   form section label:hover {
-    background: var(--primary-color);
+    background: var(--font-color);
     border: 1px solid var(--accent-color);
+  }
+
+  .btnGrey {
+    background: var(--font-color) !important;
+    border: 1px solid var(--accent-color) !important;
+  }
+
+  .btnGrey:hover {
+    background: var(--accent-color) !important;
+    border: 1px solid var(--font-color) !important;
+    color: var(--background-color) !important;
   }
 </style>
 
@@ -151,6 +181,7 @@
 
     <section>
       <label
+        class:btnGrey
         bind:this={selectButton}
         for="fileElem">Select Files</label>
 

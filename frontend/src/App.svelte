@@ -14,11 +14,12 @@
   :global(:root) {
     --background-color: #222629;
     --secondary-background-color: #333;
-    --primary-color: #61892F;
+    --primary-color: #86C232;
     /* --secondary-color: #222629; */
-    --accent-color: #86C232;
-    --font-color: #6B6E70;
-    --font-secondary-color: #61892F;
+    --accent-color: #8BC149;
+    --font-color: #B0B0B5;
+    --font-secondary-color: #A5CF72;
+		--error-color: #FF4747;
   }
 
   :global(html) {
@@ -51,7 +52,7 @@
 
 	header > a:first-child {
 		margin-left: 15%;
-		color: var(--font-secondary-color);
+		color: var(--accent-color);
 	}
 
 	header > a:first-child:hover {
@@ -68,6 +69,8 @@
 	header > nav > a {
 		padding: 5px 10px;
 		color: var(--accent-color);
+		font-size: 1.8rem;
+		font-weight: bold;
 	}
 
 	main {
@@ -87,7 +90,7 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-size: 1.3rem;
+		font-size: 1.4rem;
 	}
 
 	footer p {
@@ -100,7 +103,7 @@
 	}
 
   footer section {
-		font-size: 1rem;
+		font-size: 1.2rem;
 	}
 </style>
 
