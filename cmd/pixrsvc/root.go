@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" // is the mysql driver
@@ -16,8 +17,10 @@ import (
 
 var (
 	rootOptions struct {
-		databaseCred string
-		serverPort   string
+		databaseCred  string
+		serverPort    string
+		dataDirectory string
+		debug         bool
 	}
 
 	rootCmd = &cobra.Command{
@@ -44,6 +47,22 @@ func init() {
 		"",
 		"server port",
 	)
+
+	rootCmd.Flags().StringVarP(
+		&rootOptions.dataDirectory,
+		"data",
+		"",
+		"data",
+		"location to store image file data [default: data]",
+	)
+
+	rootCmd.Flags().BoolVarP(
+		&rootOptions.debug,
+		"debug",
+		"",
+		false,
+		"set server to debug mode [extra logging, prints routes, etc]",
+	)
 }
 
 func rootCmdFunc(cmd *cobra.Command, args []string) error {
@@ -63,9 +82,14 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 		return errors.Wrap(err, "connecting to the database")
 	}
 
+	if _, err := os.Stat(rootOptions.dataDirectory); os.IsNotExist(err) {
+		// does not exist; so create
+		os.MkdirAll(rootOptions.dataDirectory, os.ModePerm)
+	}
+
 	imageDB := mysql.NewImageRepository(db)
 	imageService := file.New(imageDB)
-	httpService := server.New(imageService)
+	httpService := server.New(imageService, rootOptions.dataDirectory, rootOptions.debug)
 	httpService.Start(port)
 
 	return nil

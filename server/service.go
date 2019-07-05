@@ -20,7 +20,7 @@ type Server struct {
 }
 
 // New instatiates a Server service for use
-func New(is file.Service) *Server {
+func New(is file.Service, dataDir string, debug bool) *Server {
 	logger := log.New(io.Writer(os.Stdout), "server:", log.Lshortfile)
 
 	s := &Server{
@@ -31,11 +31,21 @@ func New(is file.Service) *Server {
 	s.router.HideBanner = true
 	s.router.Pre(middleware.RemoveTrailingSlash())
 	s.router.Use(cacheControl)
-	s.router.Use(middleware.Logger())
 	s.router.Use(middleware.Recover())
 
-	s.router.Static("/", "frontend/public") // serves javascript and css
-	s.router.Static("/images/data", "data") // serves uploaded images
+	if debug {
+		s.router.Use(middleware.Logger())
+
+		// writes all routes to a json file
+		data, err := json.MarshalIndent(s.router.Routes(), "", "  ")
+		if err != nil {
+			log.Panic(err)
+		}
+		ioutil.WriteFile("routes.json", data, 0644)
+	}
+
+	s.router.Static("/", "frontend/public")  // serves javascript and css
+	s.router.Static("/images/data", dataDir) // serves uploaded images
 
 	// Svelte compiles before server use
 	// since everything is bundled together
@@ -61,13 +71,6 @@ func New(is file.Service) *Server {
 		logger:  logger,
 	}
 	fh.router(i)
-
-	// writes all routes to a json file
-	data, err := json.MarshalIndent(s.router.Routes(), "", "  ")
-	if err != nil {
-		log.Panic(err)
-	}
-	ioutil.WriteFile("routes.json", data, 0644)
 
 	return s
 }
