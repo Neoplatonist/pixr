@@ -1,0 +1,10 @@
+{
+  "name": "Pixr",
+  "short_name": "Pixr",
+  "lang": "en-US",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#222629",
+  "theme_color": "#222629",
+  "description": "A minimalist image sharing site."
+}
