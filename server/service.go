@@ -5,10 +5,8 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 
-	"github.com/gobuffalo/packr/v2"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -34,21 +32,12 @@ func New(is file.Service, dataDir string, debug bool) *Server {
 	s.router.Pre(middleware.RemoveTrailingSlash())
 	s.router.Use(cacheControl)
 	s.router.Use(middleware.Recover())
-
 	if debug {
 		s.router.Use(middleware.Logger())
-
-		// writes all routes to a json file
-		data, err := json.MarshalIndent(s.router.Routes(), "", "  ")
-		if err != nil {
-			log.Panic(err)
-		}
-		ioutil.WriteFile("routes.json", data, 0644)
 	}
 
 	// serves javascript and css from public directory
-	box := packr.New("public", "frontend/public")
-	s.router.GET("/", echo.WrapHandler(http.FileServer(box)))
+	s.router.Static("/", "frontend/public")
 	s.router.Static("/images/data", dataDir) // serves uploaded images
 
 	// Svelte compiles before server use
@@ -75,6 +64,16 @@ func New(is file.Service, dataDir string, debug bool) *Server {
 		logger:  logger,
 	}
 	fh.router(i)
+
+	if debug {
+		// writes all routes to a json file
+		data, err := json.MarshalIndent(s.router.Routes(), "", "  ")
+		if err != nil {
+			log.Panic(err)
+		}
+
+		ioutil.WriteFile("routes.json", data, 0644)
+	}
 
 	return s
 }
