@@ -39,7 +39,7 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := New(tt.args.is, false); reflect.TypeOf(got) != reflect.TypeOf(tt.want) {
+			if got := New(tt.args.is, "data", false); reflect.TypeOf(got) != reflect.TypeOf(tt.want) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})

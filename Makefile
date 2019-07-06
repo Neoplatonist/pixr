@@ -7,6 +7,7 @@ devBack:
 	@realize start
 
 build:
+	@cd server; packr2
 	@cd cmd/pixrsvc; go build -o ../../pixr
 	@./pixr
 

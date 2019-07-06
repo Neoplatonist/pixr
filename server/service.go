@@ -5,8 +5,10 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/gobuffalo/packr/v2"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -44,7 +46,9 @@ func New(is file.Service, dataDir string, debug bool) *Server {
 		ioutil.WriteFile("routes.json", data, 0644)
 	}
 
-	s.router.Static("/", "frontend/public")  // serves javascript and css
+	// serves javascript and css from public directory
+	box := packr.New("public", "frontend/public")
+	s.router.GET("/", echo.WrapHandler(http.FileServer(box)))
 	s.router.Static("/images/data", dataDir) // serves uploaded images
 
 	// Svelte compiles before server use

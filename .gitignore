@@ -7,3 +7,5 @@ vendor
 routes.json
 pixr
 data/*
+packrd
+server-packr.go
