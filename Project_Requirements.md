@@ -21,29 +21,30 @@ Create a simplistic file sharing site that allows users to quickly upload conten
 ## Product Requirements
 
 ### Pages
-- [ ] Home Page
-- [ ] Upload Page
-- [ ] About Page
-- [x] Terms of Service
-- [x] Privacy Policy
+- Home Page
+- Upload Page
+- About Page
+- Terms of Service
+- Privacy Policy
 
 ### User Stories
 #### Home Page
-1. [ ] The user can sort images by date.
-2. [ ] The user can keep seeing more images the more they scroll (infinite scroll).
-3. [ ] The user can click an image to get a larger view in a modal.
+1. The user can sort images by date.
+2. The user can keep seeing more images the more they scroll (infinite scroll).
+3. The user can click an image to get a larger view in a modal.
+4. The user can sort the images by Newest or Oldest images first.
 
 #### Upload Page
-1. [ ] The user can use a button to select files from their computer.
-2. [ ] The user can drag and drop a selection of files.
-3. [ ] The user can upload photos in bulk.
-4. [ ] The user can remove photos from the upload preview before uploading.
-5. [ ] The user is only able to upload image files.
-6. [ ] The user can only upload a max of 10 images in bulk.
-7. [ ] The user may need to use reCaptcha to verify they are not a bot when uploading.
+1. The user can use a button to select files from their computer.
+2. The user can drag and drop a selection of files.
+3. The user can upload photos in bulk.
+4. The user can remove photos from the upload preview before uploading.
+5. The user is only able to upload image files.
+6. The user can only upload a max of 10 images in bulk.
+7. The user may need to use reCaptcha to verify they are not a bot when uploading.
 
 #### About Page
-1. [ ] The user can read more about the site and its rules.
+1. The user can read more about the site and its rules.
 
 ----
 
