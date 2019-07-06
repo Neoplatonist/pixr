@@ -90,7 +90,9 @@ func rootCmdFunc(cmd *cobra.Command, args []string) error {
 	imageDB := mysql.NewImageRepository(db)
 	imageService := file.New(imageDB)
 	httpService := server.New(imageService, rootOptions.dataDirectory, rootOptions.debug)
-	httpService.Start(port)
+	if err := httpService.Start(port); err != nil {
+		return errors.Wrap(err, "starting http server")
+	}
 
 	return nil
 }
