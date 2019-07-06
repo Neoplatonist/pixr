@@ -2,7 +2,7 @@ DIR = $(shell pwd)
 VERSION = $(shell grep -E 'Version = ' ./cmd/pixrsvc/cli.go | cut -f2 -d'"')
 
 tag:
-	@echo $(VERSION)
+	@git tag -a $(VERSION)
 
 devFront:
 	@cd frontend; npm run dev
