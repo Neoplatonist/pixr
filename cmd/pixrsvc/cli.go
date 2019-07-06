@@ -9,7 +9,12 @@ import (
 	"github.com/spf13/viper"
 )
 
-var logger = log.New(io.Writer(os.Stdout), "cli:", log.Lshortfile)
+var (
+	// Version of Pixr
+	Version = "1.0.0"
+
+	logger = log.New(io.Writer(os.Stdout), "cli:", log.Lshortfile)
+)
 
 func initConfig() {
 	viper.SetConfigType("yaml")
